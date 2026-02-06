@@ -1,0 +1,84 @@
+> port forward teh essential ports for prometheus, loki and grafana
+> create a custom rule files for both prometheus alert and loki alert
+> configure the alertmanager to send alerts to slack and gmail
+> we also do this in teh grafana ui (creating and alerts)
+> we can create teh alert based on teh rule name ,severity ,labels etc
+advantages of the maual:
+>Powerful routing logic
+
+You can route:
+
+By severity
+
+By team
+
+By service
+
+By namespace
+
+By alert name
+2. GitOps / Infrastructure as Code
+alert-rules.yaml
+alertmanager.yaml
+
+
+✔ Version control
+✔ PR review
+✔ Rollback
+>steps to do that create a rules for both 
+=================
+go to this page for the 
+https://api.slack.com/apps creation of teh new app
+1️⃣ SLACK ALERTS (MOST COMMON)
+🔹 Step 1: Create Slack Webhook
+
+Go to 👉 https://api.slack.com/apps
+
+Create New App
+
+Choose From scratch
+
+App name: alertmanager
+
+Select workspace
+
+Enable Incoming Webhooks
+
+Go to Incoming Webhooks
+
+Turn ON
+
+Click Add New Webhook
+
+Choose a channel (e.g. #alerts)
+
+Copy the Webhook URL and use in teh yaml
+
+1️⃣ ROUTING OPTIONS (MOST COMMON)
+
+You can route alerts based on:
+
+Routing Key	Example
+alertname	HighCPUUsage
+severity	critical
+source	loki
+app	payments
+namespace	prod
+team	backend
+2️⃣ ROUTE ONLY A SPECIFIC ALERT (YOUR EXACT QUESTION)
+🎯 Example:
+
+Only HighCPUUsage → Slack
+Only HighErrorLogs → Email
+✅ This is enough (no -n needed)
+metadata:
+  name: cpu-alerts
+  namespace: monitoring
+
+
+Then simply run:
+
+kubectl apply -f prom-cpu-alert.yaml
+
+
+👉 It will go directly into monitoring namespace

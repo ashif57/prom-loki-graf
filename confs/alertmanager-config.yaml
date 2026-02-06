@@ -1,0 +1,44 @@
+global:
+  # smtp_smarthost: "smtp.gmail.com:587"
+  # smtp_from: "ashifnavheed4009@gmail.com"
+  # smtp_auth_username: "${SMTP_USERNAME}"
+  # smtp_auth_password: "${SMTP_PASSWORD}"
+
+route:
+  receiver: "slack-receiver"
+  group_by: ["alertname"]
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 4h
+
+  routes:
+  # Loki alerts → Email
+  # - matchers:
+  #   - source="loki"
+  #   - severity="critical"
+  #   - alertname="HighErrorLogs"
+  #   receiver: "email-receiver"
+
+  # Prometheus alerts → Slack
+  - matchers:
+    - source="prometheus"
+    - severity="warning"
+    - alertname="HighCPUUsage"
+    receiver: "slack-receiver"
+
+receivers:
+- name: "slack-receiver"
+  slack_configs:
+  - api_url:REMOVEDSECRET
+    channel: "#all-devops-test"
+    title: "{{ .CommonAnnotations.summary }}"
+    text: >-
+      {{ range .Alerts }}
+      *Description:* {{ .Annotations.description }}
+      *Severity:* {{ .Labels.severity }}
+      {{ end }}
+
+# - name: "email-receiver"
+#   email_configs:
+#   - to: "ashifdummy57@gmail.com"
+#     send_resolved: true

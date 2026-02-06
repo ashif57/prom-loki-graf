@@ -1,0 +1,43 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: loki-error-alert
+  namespace: monitoring
+spec:
+  groups:
+  - name: loki-alerts
+    rules:
+    - alert: HighErrorLogs #this need to match in the config
+      expr: |
+        sum(
+          count_over_time(
+            {namespace="default"} |= "error" [2m]
+          )
+        ) > 5
+      for: 10s
+      labels:
+        severity: critical #we can match based on this too
+        source: loki
+      annotations:
+        summary: "High error logs detected"
+        description: "More than 5 error logs in last 2 minutes"
+
+---
+apiVersion: monitoring.coreos.com/v1
+kind: LokiRule
+metadata:
+  name: loki-error-alert
+  namespace: monitoring
+spec:
+  groups:
+  - name: loki-alerts
+    rules:
+    - alert: HighErrorLogs
+      expr: |
+        sum(count_over_time({namespace="default"} |= "error" [2m])) > 5
+      for: 10s
+      labels:
+        severity: critical
+      annotations:
+        summary: "High error logs detected"
+        description: "More than 5 error logs in last 2 minutes"
