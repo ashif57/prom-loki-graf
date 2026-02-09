@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: custom-alert
+  namespace: monitoring
+  labels:
+    release: monitoring   # THIS IS THE IMPORTANT PART
+spec:
+  groups:
+  - name: custom.rules
+    rules:
+    - alert: CustomSlackOnlyAlert
+      expr: vector(1)
+      for: 10s
+      labels:
+        severity: critical
+        source: custom-test
+      annotations:
+        summary: "✅ This alert is routed ONLY to custom Slack!"

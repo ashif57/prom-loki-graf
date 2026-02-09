@@ -1,0 +1,33 @@
+alertmanager:
+  config:
+    global:
+      resolve_timeout: 5m
+      smtp_smarthost: "smtp.gmail.com:587"
+      smtp_from: "ashifnavheed4009@gmail.com"
+      smtp_auth_username: "ashifnavheed4009@gmail.com"
+      smtp_auth_password: [PASSWORD] #remove the space between the password
+
+    route:
+      receiver: default-receiver
+      routes:
+        - matchers:
+            - source="custom-test"
+          receiver: custom-slack
+        - matchers:
+            - source="email-test"
+          receiver: email-alerts
+
+    receivers:
+      - name: default-receiver
+
+      - name: custom-slack
+        slack_configs:
+          - api_url: "https://hooks.slack.com/services/originalhookL"
+            channel: "#sampletest"
+            title: "🚨 Custom Alert"
+            text: "{{ range .Alerts }}{{ .Annotations.summary }}\n{{ end }}"
+
+      - name: email-alerts
+        email_configs:
+          - to: "ashifdummy57@gmail.com"
+

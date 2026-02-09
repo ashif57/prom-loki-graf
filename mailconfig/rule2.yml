@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: email-test-alert
+  namespace: monitoring
+  labels:
+    release: monitoring
+spec:
+  groups:
+  - name: email.test.rules
+    rules:
+    - alert: EmailTestAlert
+      expr: vector(1)
+      for: 10s
+      labels:
+        severity: warning
+        source: email-test
+      annotations:
+        summary: "📧 Email alert test successful!"
