@@ -30,8 +30,8 @@ graph TD
         AM -->|Route: source='custom-test'| Slack[Slack Receiver]
         AM -->|Route: source='email-test'| Email[Email Receiver]
 
-        Slack -->|Notification| SlackCh[#sampletest Channel]
-        Email -->|Notification| Gmail[ashifdummy57@gmail.com]
+        Slack -->|Notification| SlackCh["#sampletest Channel"]
+        Email -->|Notification| Gmail["ashifdummy57@gmail.com"]
     end
 
     classDef tool fill:#f9f,stroke:#333,stroke-width:2px;
