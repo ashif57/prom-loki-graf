@@ -29,7 +29,7 @@ route:
 receivers:
 - name: "slack-receiver"
   slack_configs:
-  - api_url:REMOVEDSECRET
+  - api_url: REMOVEDSECRET
     channel: "#all-devops-test"
     title: "{{ .CommonAnnotations.summary }}"
     text: >-

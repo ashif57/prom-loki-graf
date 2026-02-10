@@ -40,6 +40,9 @@ graph TD
     class SlackCh,Gmail dest;
 ```
 
+![System Architecture](<screenshots/prometheus-architecture-(1).gif>)
+_System Architecture Diagram_
+
 ## �📂 Configuration (`mailconfig`)
 
 The `mailconfig` directory contains the critical configuration files used to set up the alerting logic.
