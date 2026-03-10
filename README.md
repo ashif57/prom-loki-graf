@@ -17,27 +17,25 @@ The following diagram illustrates how metrics and logs flow through the system a
 
 ```mermaid
 graph TD
-    subgraph "Observability Stack"
-        App[Application / System] -->|Metrics| Prom[Prometheus]
-        App -->|Logs| Loki[Loki]
-        Prom -->|Query| Graf[Grafana]
+    classDef tool fill:#f9f,stroke:#333,stroke-width:2px;
+    classDef dest fill:#bbf,stroke:#333,stroke-width:2px;
+
+    subgraph Observability [Observability Stack]
+        App[Application / System] -->|Metrics| Prom[Prometheus]:::tool
+        App -->|Logs| Loki[Loki]:::tool
+        Prom -->|Query| Graf[Grafana]:::tool
         Loki -->|Query| Graf
     end
 
-    subgraph "Alerting Pipeline"
-        Prom -->|Fires Alert| AM[Alertmanager]
+    subgraph Alerting [Alerting Pipeline]
+        Prom -->|Fires Alert| AM[Alertmanager]:::tool
 
         AM -->|Route: source='custom-test'| Slack[Slack Receiver]
         AM -->|Route: source='email-test'| Email[Email Receiver]
 
-        Slack -->|Notification| SlackCh["#sampletest Channel"]
-        Email -->|Notification| Gmail["ashifdummy57@gmail.com"]
+        Slack -->|Notification| SlackCh["#sampletest Channel"]:::dest
+        Email -->|Notification| Gmail["ashifdummy57@gmail.com"]:::dest
     end
-
-    classDef tool fill:#f9f,stroke:#333,stroke-width:2px;
-    classDef dest fill:#bbf,stroke:#333,stroke-width:2px;
-    class Prom,Loki,Graf,AM tool;
-    class SlackCh,Gmail dest;
 ```
 
 ![System Architecture](<screenshots/prometheus-architecture-(1).gif>)
